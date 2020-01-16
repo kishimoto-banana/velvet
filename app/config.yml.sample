@@ -1,2 +1,2 @@
 velvet-api:
-  address: "192.168.11.5:8080"
+  address: "<your host>:8080"
