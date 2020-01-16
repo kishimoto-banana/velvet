@@ -4,22 +4,35 @@ from flask import redirect
 from flask import url_for
 from flask import render_template
 
+from const import (
+    title,
+    url_regex,
+    invalid_url_msg,
+)
+
 app = Flask(__name__)
-TITLE = "velvet"
+
+
+def valid_url(url: str) -> bool:
+    if url_regex.search(url):
+        return True
+    else:
+        return False
 
 
 @app.route('/')
 def index():
-    return render_template("index.html", title=TITLE)
+    return render_template("index.html", title=title)
 
 
-@app.route("/prediction", methods=["GET", "POST"])
+@app.route("/prediction", methods=["POST"])
 def prediction_hatebu():
-    if request.method == "POST":
-        url = request.form["url"]
-        return render_template("index.html", title=TITLE, url=url)
-    else:
-        return redirect(url_for('index'))
+    url = request.form["url"]
+    if not valid_url(url):
+        return render_template("index.html",
+                               title=title,
+                               err_msg=invalid_url_msg)
+    return render_template("index.html", title=title, url=url)
 
 
 if __name__ == "__main__":
