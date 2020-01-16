@@ -11,7 +11,15 @@ from const import (
     title,
     hatebu_prediction_path,
     url_regex,
+    invalid_url_code,
+    cannot_scrape_code,
+    cannot_tokenize_code,
+    InvalidUrlError,
+    CannotGetBlogContentError,
+    UnexpectedError,
     invalid_url_msg,
+    cannot_get_blog_content_msg,
+    unexpected_msg,
 )
 
 with open(config_path, "r", encoding="utf-8") as f:
@@ -31,9 +39,19 @@ def get_hatebu(url: str) -> dict:
     address = config["velvet-api"]["address"]
     request_url = f"http://{address}{hatebu_prediction_path}?url={url}"
     res = requests.get(request_url)
-    hatebu_info = res.json()
 
-    return hatebu_info
+    if res.status_code == requests.codes.ok:
+        hatebu_info = res.json()
+        return hatebu_info
+    else:
+        err = res.json()
+        err_code = err["code"]
+        if err_code == invalid_url_code:
+            raise InvalidUrlError
+        elif err_code == cannot_scrape_code or err_code == cannot_scrape_code:
+            raise CannotGetBlogContentError
+        else:
+            raise UnexpectedError
 
 
 @app.route('/')
@@ -48,12 +66,24 @@ def prediction_hatebu():
         return render_template("index.html",
                                title=title,
                                err_msg=invalid_url_msg)
-    hatebu_info = get_hatebu(url)
-
-    return render_template("index.html",
-                           title=title,
-                           is_hatebu=hatebu_info["is_hatebu"],
-                           hatebu_num=hatebu_info["hatebu_num"])
+    try:
+        hatebu_info = get_hatebu(url)
+        return render_template("index.html",
+                               title=title,
+                               is_hatebu=hatebu_info["is_hatebu"],
+                               hatebu_num=hatebu_info["hatebu_num"])
+    except InvalidUrlError:
+        return render_template("index.html",
+                               title=title,
+                               err_msg=invalid_url_msg)
+    except CannotGetBlogContentError:
+        return render_template("index.html",
+                               title=title,
+                               err_msg=cannot_get_blog_content_msg)
+    except UnexpectedError:
+        return render_template("index.html",
+                               title=title,
+                               err_msg=unexpected_msg)
 
 
 if __name__ == "__main__":
