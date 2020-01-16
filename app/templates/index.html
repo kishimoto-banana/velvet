@@ -12,10 +12,11 @@
                     <div class="text-danger">{{ err_msg }}</div>{% endif %}
                 </div>
                 <button class="btn btn-primary" type="submit">送信</button>
-            </form>
-            <p class="lead">
-                {% if url %} {{ url }} {% endif %}
-            </p>
+                <div class="py-1 text-center">
+                    <p class="lead">
+                        {% if is_hatebu is sameas true %} はてブ数は {{ hatebu_num }} くらいです多分 {% else %} はてブはつかないかもしれません… {% endif %}
+                    </p>
+                </div>
         </div>
     </div>
     <footer class="text-center text-small">
