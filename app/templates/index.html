@@ -14,7 +14,7 @@
                 <button class="btn btn-primary" type="submit">送信</button>
                 <div class="py-1 text-center">
                     <p class="lead">
-                        {% if is_hatebu is sameas true %} はてブ数は {{ hatebu_num }} くらいです多分 {% else %} はてブはつかないかもしれません… {% endif %}
+                        {% if hatebu_num %} {% if is_hatebu is sameas true %} はてブ数は {{ hatebu_num }} くらいです多分 {% else %} はてブはつかないかもしれません… {% endif %} {% endif %}
                     </p>
                 </div>
         </div>
