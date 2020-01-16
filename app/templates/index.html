@@ -8,7 +8,8 @@
             <form action="/prediction" method="post">
                 <div class="form-group">
                     <label>はてなブログのURL（公開前の場合は<a href="https://help.hatenablog.com/entry/editor/preview/sharing">下書きプレビュー共有URL</a>）</label>
-                    <input type="text" class="form-control " id="url" name="url">
+                    <input type="text" class="form-control " id="url" name="url"> {% if err_msg %}
+                    <div class="text-danger">{{ err_msg }}</div>{% endif %}
                 </div>
                 <button class="btn btn-primary" type="submit">送信</button>
             </form>
