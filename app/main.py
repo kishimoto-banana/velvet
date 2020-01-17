@@ -14,12 +14,15 @@ from const import (
     invalid_url_code,
     cannot_scrape_code,
     cannot_tokenize_code,
+    not_hatena_code,
     InvalidUrlError,
     CannotGetBlogContentError,
     UnexpectedError,
+    NotHatenaError,
     invalid_url_msg,
     cannot_get_blog_content_msg,
     unexpected_msg,
+    not_hatena_msg,
 )
 
 with open(config_path, "r", encoding="utf-8") as f:
@@ -50,6 +53,8 @@ def get_hatebu(url: str) -> dict:
             raise InvalidUrlError
         elif err_code == cannot_scrape_code or err_code == cannot_scrape_code:
             raise CannotGetBlogContentError
+        elif err_code == not_hatena_code:
+            raise NotHatenaError
         else:
             raise UnexpectedError
 
@@ -80,6 +85,10 @@ def prediction_hatebu():
         return render_template("index.html",
                                title=title,
                                err_msg=cannot_get_blog_content_msg)
+    except NotHatenaError:
+        return render_template("index.html",
+                               title=title,
+                               err_msg=not_hatena_msg)
     except UnexpectedError:
         return render_template("index.html",
                                title=title,
