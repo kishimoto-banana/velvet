@@ -2,8 +2,6 @@ import yaml
 import requests
 from flask import Flask
 from flask import request
-from flask import redirect
-from flask import url_for
 from flask import render_template
 
 from const import (
