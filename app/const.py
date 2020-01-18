@@ -39,4 +39,4 @@ not_hatena_code = 1004
 invalid_url_msg = "有効なURLではありません"
 cannot_get_blog_content_msg = "ブログの情報を取得できませんでした。URLを確認してみてください。"
 unexpected_msg = "予期していないエラーが起きました。時間を置くかちょっと諦めてください…"
-not_hatena_msg = "はてなブログのドメインではありません"
+not_hatena_msg = "はてなブログの記事ではないですね"
