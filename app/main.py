@@ -1,3 +1,4 @@
+import os
 import yaml
 import requests
 from flask import Flask
@@ -5,6 +6,7 @@ from flask import request
 from flask import url_for
 from flask import redirect
 from flask import render_template
+from flask import send_from_directory
 
 from const import (
     config_path,
@@ -57,6 +59,12 @@ def get_hatebu(url: str) -> dict:
             raise NotHatenaError
         else:
             raise UnexpectedError
+
+
+@app.route('/favicon.ico')
+def send_favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico')
 
 
 @app.route('/')
