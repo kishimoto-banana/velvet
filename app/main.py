@@ -2,6 +2,8 @@ import yaml
 import requests
 from flask import Flask
 from flask import request
+from flask import url_for
+from flask import redirect
 from flask import render_template
 
 from const import (
@@ -62,35 +64,38 @@ def index():
     return render_template("index.html", title=title)
 
 
-@app.route("/prediction", methods=["POST"])
+@app.route("/prediction", methods=["GET", "POST"])
 def prediction_hatebu():
-    url = request.form["url"]
-    if not valid_url(url):
-        return render_template("index.html",
-                               title=title,
-                               err_msg=invalid_url_msg)
-    try:
-        hatebu_info = get_hatebu(url)
-        return render_template("index.html",
-                               title=title,
-                               is_hatebu=hatebu_info["is_hatebu"],
-                               hatebu_num=hatebu_info["hatebu_num"])
-    except InvalidUrlError:
-        return render_template("index.html",
-                               title=title,
-                               err_msg=invalid_url_msg)
-    except CannotGetBlogContentError:
-        return render_template("index.html",
-                               title=title,
-                               err_msg=cannot_get_blog_content_msg)
-    except NotHatenaError:
-        return render_template("index.html",
-                               title=title,
-                               err_msg=not_hatena_msg)
-    except UnexpectedError:
-        return render_template("index.html",
-                               title=title,
-                               err_msg=unexpected_msg)
+    if request.method == "POST":
+        url = request.form["url"]
+        if not valid_url(url):
+            return render_template("index.html",
+                                   title=title,
+                                   err_msg=invalid_url_msg)
+        try:
+            hatebu_info = get_hatebu(url)
+            return render_template("index.html",
+                                   title=title,
+                                   is_hatebu=hatebu_info["is_hatebu"],
+                                   hatebu_num=hatebu_info["hatebu_num"])
+        except InvalidUrlError:
+            return render_template("index.html",
+                                   title=title,
+                                   err_msg=invalid_url_msg)
+        except CannotGetBlogContentError:
+            return render_template("index.html",
+                                   title=title,
+                                   err_msg=cannot_get_blog_content_msg)
+        except NotHatenaError:
+            return render_template("index.html",
+                                   title=title,
+                                   err_msg=not_hatena_msg)
+        except UnexpectedError:
+            return render_template("index.html",
+                                   title=title,
+                                   err_msg=unexpected_msg)
+    else:
+        return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
