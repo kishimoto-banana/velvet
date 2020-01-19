@@ -8,5 +8,5 @@ services:
     volumes:
       - ./app:/app
     ports:
-      - 18000:18000
-    command: gunicorn -b 0.0.0.0:18000 -w 2 main:app
+      - 80:80
+    command: gunicorn -b 0.0.0.0:80 -w 2 main:app
