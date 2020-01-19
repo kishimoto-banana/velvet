@@ -9,4 +9,4 @@ services:
       - ./app:/app
     ports:
       - 80:80
-    command: gunicorn -b 0.0.0.0:80 -w 2 main:app
+    command: gunicorn -b 0.0.0.0:80 -b 0.0.0.0:443 -w 2 main:app
