@@ -18,8 +18,8 @@
 
 docker-composeを使用して、アプリケーションを実行します。
 
-'''bash
+```bash
 $ docker-compose up -d
-'''
+```
 
 [velvet-api](https://github.com/kishimoto-banana/velvet-api)の実行も必要です。
